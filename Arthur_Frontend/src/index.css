@@ -1,0 +1,149 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 100% 98%;
+    --foreground: 20 85% 17%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 20 85% 17%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 85% 17%;
+
+    --primary: 20 100% 18%;
+    --primary-foreground: 40 100% 98%;
+
+    --secondary: 32 93% 51%;
+    --secondary-foreground: 0 0% 0%;
+
+    --muted: 30 10% 93%;
+    --muted-foreground: 20 40% 30%;
+
+    --accent: 30 100% 93%;
+    --accent-foreground: 20 85% 17%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 30 15% 80%;
+    --input: 30 15% 80%;
+    --ring: 20 85% 17%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 20 50% 10%;
+    --foreground: 30 15% 90%;
+
+    --card: 20 50% 10%;
+    --card-foreground: 30 15% 90%;
+
+    --popover: 20 50% 10%;
+    --popover-foreground: 30 15% 90%;
+
+    --primary: 32 93% 51%;
+    --primary-foreground: 20 50% 10%;
+
+    --secondary: 20 30% 20%;
+    --secondary-foreground: 30 15% 90%;
+
+    --muted: 20 30% 20%;
+    --muted-foreground: 30 15% 70%;
+
+    --accent: 20 30% 20%;
+    --accent-foreground: 30 15% 90%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 30 15% 90%;
+
+    --border: 20 30% 30%;
+    --input: 20 30% 30%;
+    --ring: 32 93% 51%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-pesto-brown;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-pesto-orange hover:bg-pesto-light-orange text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden;
+  }
+  
+  .product-card {
+    @apply bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden p-6;
+  }
+  
+  .product-image {
+    @apply mx-auto rounded-full object-cover transition-transform duration-500 hover:scale-110;
+  }
+  
+  .category-card {
+    @apply flex flex-col items-center justify-center text-center gap-2 transition-all duration-300 hover:scale-105 hover:-translate-y-1;
+  }
+  
+  .category-image {
+    @apply w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-white shadow-lg;
+  }
+  
+  /* New futuristic components */
+  .glass-card {
+    @apply backdrop-blur-md bg-white/10 border border-white/20 shadow-lg;
+  }
+  
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-pesto-brown to-pesto-orange;
+  }
+  
+  .hover-scale {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
+  
+  .glow-effect {
+    @apply relative;
+  }
+  
+  .glow-effect::after {
+    @apply content-[''] absolute -z-10 inset-0 bg-pesto-orange/20 blur-xl opacity-0 transition-opacity duration-300;
+  }
+  
+  .glow-effect:hover::after {
+    @apply opacity-100;
+  }
+}
+
+/* Custom animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0); }
+  50% { box-shadow: 0 0 20px 5px rgba(243, 156, 18, 0.3); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s infinite;
+}
+
