@@ -66,8 +66,8 @@ app.get("/*", (req, res) => {
 
 // ========= ADMIN PANEL (Sandwich on "/admin") =========
 const adminFrontendPath = path.join(__dirname, "../Sandwich/dist");
-app.use("/", express.static(adminFrontendPath));
-app.get("/*", (req, res) => {
+app.use("/admin", express.static(adminFrontendPath));
+app.get("/admin/*", (req, res) => {
   res.sendFile(path.join(adminFrontendPath, "index.html"));
 });
 
