@@ -70,7 +70,7 @@ useEffect(()=>{
       maxHeight: '90vh',
     }}
   >
-    {/* Rest of your modal content */}
+  
 
     <div className="bg-white rounded-lg max-w-3xl w-full shadow-lg relative max-h-[90vh]">
       {/* Close Button */}
