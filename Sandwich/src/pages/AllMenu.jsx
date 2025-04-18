@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Edit, MoreVertical, Search, Trash2, Eye } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -9,7 +9,7 @@ import { useMenuCategory } from '../context/MenuCategoryContext';
 const AllMenu = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { menus, deleteMenu } = useMenus();
+  const { menus, deleteMenu, fetchMenus } = useMenus();
   const { myCategories }  = useMenuCategory();
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,6 +19,14 @@ const AllMenu = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 const [selectedItem, setSelectedItem] = useState(null);
+
+const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+
+
+useEffect(()=>{
+  fetchMenus();
+},[])
+
 
 
   const filteredItems = menus.filter((item) => {
@@ -49,8 +57,21 @@ const [selectedItem, setSelectedItem] = useState(null);
   return (
     <div className="space-y-6 p-0 md:p-4">
 
+{/* {isModalOpen && selectedItem && (
+  // <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-0 p-4">
+  <div className="fixed inset-0 z-50 flex justify-center bg-black bg-opacity-0 p-4 items-start overflow-y-auto"> */}
 {isModalOpen && selectedItem && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-0 p-4">
+  <div
+    className="absolute z-50 bg-white rounded-lg max-w-3xl w-full shadow-lg"
+    style={{
+      top: modalPosition.top  - 200,
+      // left: modalPosition.left,
+      position: 'absolute',
+      maxHeight: '90vh',
+    }}
+  >
+    {/* Rest of your modal content */}
+
     <div className="bg-white rounded-lg max-w-3xl w-full shadow-lg relative max-h-[90vh]">
       {/* Close Button */}
       <button
@@ -244,13 +265,28 @@ const [selectedItem, setSelectedItem] = useState(null);
                       </button>
                       {dropdownOpen === item._id && (
                         <div className="absolute right-0 mt-2 w-32 bg-white border rounded-md shadow z-10">
-                          <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 flex items-center"   onClick={() => {
+                          {/* <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 flex items-center"   onClick={() => {
     setSelectedItem(item);
     setIsModalOpen(true);
     setDropdownOpen(null);
   }}>
                             <Eye className="h-4 w-4 mr-2" /> View
-                          </button>
+                          </button> */}
+
+<button
+  className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 flex items-center"
+  onClick={(e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setModalPosition({ top: rect.top + window.scrollY, left: rect.left });
+    setSelectedItem(item);
+    setIsModalOpen(true);
+    setDropdownOpen(null);
+  }}
+>
+  <Eye className="w-4 h-4 mr-2" />
+  View
+</button>
+
                           <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 flex items-center" onClick={() => handleEditItem(item._id)}>
                             <Edit className="h-4 w-4 mr-2" /> Edit
                           </button>
