@@ -32,33 +32,40 @@ const AllPopularChoices = () => {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {sortedPopularChoices.map((choice) => (
-            <div key={choice._id} className="relative group overflow-hidden rounded shadow-lg">
-              <img
-                src={`${config.apiUrl}/${choice.photo}`}
-                alt="Popular Choice"
-                className="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="flex space-x-4">
-                  <Link
-                    to={`/popular/create/${choice._id}`}
-                    className="text-white bg-[#5a1c00] hover:bg-[#7f2800] p-2 rounded-full transition"
-                  >
-                    <Edit className="w-5 h-5" />
-                  </Link>
-                  <button
-                    onClick={() => deletePopularChoice(choice._id)}
-                    className="text-white bg-red-500 p-2 rounded-full hover:bg-red-600 transition"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+  {sortedPopularChoices.map((choice) => (
+    <div key={choice._id} className="relative group overflow-hidden rounded shadow-lg aspect-[5.5/3] w-full">
+      <div className="absolute inset-0">
+        <img
+          src={`${config.apiUrl}/${choice.photo}`}
+          alt="Popular Choice"
+          className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40">
+          <div className="flex space-x-4">
+            <Link
+              to={`/popular/create/${choice._id}`}
+              className="text-white bg-[#5a1c00] hover:bg-[#7f2800] p-2 rounded-full transition"
+            >
+              <Edit className="w-5 h-5" />
+            </Link>
+            <button
+              onClick={() => deletePopularChoice(choice._id)}
+              className="text-white bg-red-500 p-2 rounded-full hover:bg-red-600 transition"
+            >
+              <Trash2 className="w-5 h-5" />
+            </button>
+          </div>
         </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+
+
       )}
     </div>
   );
