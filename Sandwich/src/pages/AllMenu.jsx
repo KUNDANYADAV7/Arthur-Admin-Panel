@@ -101,8 +101,12 @@ useEffect(()=>{
           {/* Right Side: Details */}
           <div>
             <h2 className="text-2xl font-bold text-[#5a1c00] mb-2">{selectedItem.name}</h2>
+            {selectedItem.onSale && selectedItem.originalPrice && <p className="text-gray-700 mt-2 text-sm leading-relaxed mb-2">
+              <p className='text-[#f39c12] font-semibold'>Sale Description</p>
+              <p className='text-[#5a1c00] font-bold'>{selectedItem.saleDescription?.toUpperCase()}</p>
+            </p>}
             <p className="text-sm text-gray-600 mb-1">
-              <strong className='text-[#5a1c00]'>Category:</strong> {selectedItem.category}
+              <p className='text-[#f39c12] font-semibold'>Category:</p> {selectedItem.category}
             </p>
             {selectedItem.subCategory && (
               <p className="text-sm text-gray-600 mb-1">
@@ -110,14 +114,9 @@ useEffect(()=>{
               </p>
             )}
             <p className="text-gray-700 mt-2 text-sm leading-relaxed mb-2">
-              <p className='text-[#5a1c00] font-semibold'>About This Dish</p>
+              <p className='text-[#f39c12] font-semibold'>About This Dish</p>
               {selectedItem.description}
             </p>
-
-            {selectedItem.onSale && selectedItem.originalPrice && <p className="text-gray-700 mt-2 text-sm leading-relaxed mb-2">
-              <p className='text-[#5a1c00] font-semibold'>Sale Description</p>
-              {selectedItem.saleDescription}
-            </p>}
 
             {/* Pricing */}
             <div className="mt-2">
@@ -237,105 +236,119 @@ useEffect(()=>{
               </button>
         </div>
         <div className="p-1 md:p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredItems.length > 0 ? (
-            filteredItems.map((item) => (
-              <div key={item._id} className="bg-gray-50 border rounded-lg shadow-sm">
-                <div className="relative h-48">
-                  <img src={`${config.apiUrl}/${item.image}`} alt={item.name} className="w-full h-full object-cover" />
-                  {item.onSale && (
-                    <span className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
-                      On Sale
-                    </span>
-                  )}
-                </div>
-                <div className="p-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="text-lg text-[#5a1c00] font-semibold truncate max-w-[150px] md:max-w-[200px]">{item.name}</h3>
-                      <p className="text-xs text-gray-500">{item.category} • {item.subCategory}</p>
-                    </div>
-                    <div className="relative">
-                      <button
-                        onClick={() =>
-                          setDropdownOpen(dropdownOpen === item._id ? null : item._id)
-                        }
-                        className="p-1 rounded hover:bg-gray-100"
-                      >
-                        <MoreVertical className="w-4 h-4" />
-                      </button>
-                      {dropdownOpen === item._id && (
-                        <div className="absolute right-0 mt-2 w-32 bg-white border rounded-md shadow z-10">
-                          {/* <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 flex items-center"   onClick={() => {
-    setSelectedItem(item);
-    setIsModalOpen(true);
-    setDropdownOpen(null);
-  }}>
-                            <Eye className="h-4 w-4 mr-2" /> View
-                          </button> */}
-
-<button
-  className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 flex items-center"
-  onClick={(e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setModalPosition({ top: rect.top + window.scrollY, left: rect.left });
-    setSelectedItem(item);
-    setIsModalOpen(true);
-    setDropdownOpen(null);
-  }}
->
-  <Eye className="w-4 h-4 mr-2" />
-  View
-</button>
-
-                          <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 flex items-center" onClick={() => handleEditItem(item._id)}>
-                            <Edit className="h-4 w-4 mr-2" /> Edit
-                          </button>
-                          <button className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center" onClick={() => handleDeleteItem(item._id)}>
-                            <Trash2 className="h-4 w-4 mr-2" /> Delete
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <p className="text-sm text-gray-600 mt-2 mb-3 line-clamp-2">{item.description}</p>
-                  <div className="flex justify-between items-center">
-                    <span className="text-lg font-bold text-gray-800">
-                      {/* ${item.price.toFixed(2)} */}
-                      ${
-  !isNaN(Number(item.price)) ? (
-    Number(item.price).toFixed(2)
-  ) : (
-    item.price // "Free", "Custom Quote", etc.
-  )
-}
-                    </span>
-                    <button
-                      onClick={() => handleEditItem(item._id)}
-                      className="text-sm border border-gray-300 px-3 py-1 rounded bg-[#5a1c00] hover:bg-[#7f2800] text-white flex items-center"
-                    >
-                      <Edit className="h-4 w-4 mr-1" /> Edit
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="col-span-3 text-center py-10">
-              <p className="text-[#5a1c00]">No menu items found.</p>
-              <p>Start adding menu to attract more customers.</p>
-              <button
-                onClick={() => {
-                  setSearchTerm('');
-                  setCategoryFilter('');
-                  setSaleFilter('');
-                }}
-                className="mt-2 text-blue-600 hover:underline text-sm"
-              >
-                {/* Clear filters */}
-              </button>
-            </div>
+  {filteredItems.length > 0 ? (
+    filteredItems.map((item) => (
+      <div key={item._id} className="bg-gray-50 border rounded-lg shadow-sm flex flex-col h-full">
+        <div className="relative h-48">
+          <img
+            src={`${config.apiUrl}/${item.image}`}
+            alt={item.name}
+            className="w-full h-full object-cover"
+          />
+          {item.onSale && (
+            <span className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
+              On Sale
+            </span>
           )}
         </div>
+
+        <div className="p-4 flex flex-col flex-grow">
+          <div className="flex justify-between items-start">
+            <div>
+              <h3 className="text-lg text-[#5a1c00] font-semibold truncate max-w-[150px] md:max-w-[200px]">
+                {item.name}
+              </h3>
+              <p className="text-xs text-gray-500">
+                {item.category} • {item.subCategory}
+              </p>
+            </div>
+
+            <div className="relative">
+              <button
+                onClick={() =>
+                  setDropdownOpen(dropdownOpen === item._id ? null : item._id)
+                }
+                className="p-1 rounded hover:bg-gray-100"
+              >
+                <MoreVertical className="w-4 h-4" />
+              </button>
+              {dropdownOpen === item._id && (
+                <div className="absolute right-0 mt-2 w-32 bg-white border rounded-md shadow z-10">
+                  <button
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 flex items-center"
+                    onClick={(e) => {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      setModalPosition({ top: rect.top + window.scrollY, left: rect.left });
+                      setSelectedItem(item);
+                      setIsModalOpen(true);
+                      setDropdownOpen(null);
+                    }}
+                  >
+                    <Eye className="w-4 h-4 mr-2" /> View
+                  </button>
+
+                  <button
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 flex items-center"
+                    onClick={() => handleEditItem(item._id)}
+                  >
+                    <Edit className="h-4 w-4 mr-2" /> Edit
+                  </button>
+
+                  <button
+                    className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center"
+                    onClick={() => handleDeleteItem(item._id)}
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" /> Delete
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <p className="text-sm text-gray-600 mt-2 mb-0 line-clamp-2">
+            {item.description}
+          </p>
+
+          {item.onSale && (
+            <p className="text-sm font-bold text-[#5a1c00] mt-2 mb-1">
+              {item.saleDescription?.toUpperCase()}
+            </p>
+          )}
+
+          {/* Sticky footer at the bottom of the card */}
+          <div className="mt-auto flex justify-between items-center pt-2 border-t border-gray-200">
+            <span className="text-lg font-bold text-gray-800">
+              { !isNaN(Number(item.price)) ? `$${Number(item.price).toFixed(2)}` : item.price }
+            </span>
+            <button
+              onClick={() => handleEditItem(item._id)}
+              className="text-sm border border-gray-300 px-3 py-1 rounded bg-[#5a1c00] hover:bg-[#7f2800] text-white flex items-center"
+            >
+              <Edit className="h-4 w-4 mr-1" /> Edit
+            </button>
+          </div>
+        </div>
+      </div>
+    ))
+  ) : (
+    <div className="col-span-3 text-center py-10">
+      <p className="text-[#5a1c00]">No menu items found.</p>
+      <p>Start adding menu to attract more customers.</p>
+      <button
+        onClick={() => {
+          setSearchTerm('');
+          setCategoryFilter('');
+          setSaleFilter('');
+        }}
+        className="mt-2 text-blue-600 hover:underline text-sm"
+      >
+        {/* Clear filters */}
+        Clear filters
+      </button>
+    </div>
+  )}
+</div>
+
       </div>
     </div>
 
