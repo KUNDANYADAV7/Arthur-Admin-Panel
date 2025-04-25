@@ -3,14 +3,12 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
+import compression from "compression"; // ✅ Added compression
 
 // Routes
 import userRoute from "./routes/user.route.js";
 import blogRoute from "./routes/blog.route.js";
 import offerRoutes from "./routes/Offer.route.js";
-import certificateRoutes from "./routes/certificate.route.js";
 import menuRoutes from "./routes/menu.route.js";
 import categoryRoutes from "./routes/menucategory.route.js";
 import popularchoiceRoutes from "./routes/popularchoice.route.js";
@@ -32,9 +30,20 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(compression()); // ✅ Enables gzip compression for faster API & frontend responses
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static('public'))
+
+// ✅ Serve static files (like images) from /public folder with 1 year cache
+app.use(express.static('public', {
+  maxAge: '1y',
+  setHeaders: (res, path) => {
+    if (path.endsWith('.jpg') || path.endsWith('.jpeg') || path.endsWith('.png') || path.endsWith('.webp') || path.endsWith('.gif') || path.endsWith('.svg')) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    }
+  }
+}));
 
 // DB connection
 mongoose
@@ -49,27 +58,6 @@ app.use("/api/menus", menuRoutes);
 app.use("/api/offers", offerRoutes);
 app.use("/api/menucategory", categoryRoutes);
 app.use("/api/popularchoice", popularchoiceRoutes);
-
-// __dirname fix for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// ========= USER WEBSITE (Arthur_Frontend on "/") =========
-const userFrontendPath = path.join(__dirname, "../Arthur_Frontend/dist");
-app.use(express.static(userFrontendPath));
-app.get("/", (req, res) => {
-  res.sendFile(path.join(userFrontendPath, "index.html"));
-});
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(userFrontendPath, "index.html"));
-});
-
-// ========= ADMIN PANEL (Sandwich on "/admin") =========
-const adminFrontendPath = path.join(__dirname, "../Sandwich/dist");
-app.use("/", express.static(adminFrontendPath));
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(adminFrontendPath, "index.html"));
-});
 
 // Start server
 app.listen(port, () => {
