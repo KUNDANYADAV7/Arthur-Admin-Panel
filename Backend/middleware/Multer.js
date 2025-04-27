@@ -22,6 +22,9 @@ export const setUploadFolder = (folderName) => (req, res, next) => {
 };
 
 export const upload = multer({ storage,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // ✅ Allow up to 10 MB
+  },
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith("image/")) {
       cb(null, true);
