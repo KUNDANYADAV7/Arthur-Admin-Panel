@@ -10,7 +10,7 @@ const deleteOldImage = (imagePath) => {
   }
 };
 
-
+//new
 export const addMenu = async (req, res) => {
   try {
     const {

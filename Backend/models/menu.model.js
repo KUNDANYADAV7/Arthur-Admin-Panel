@@ -13,3 +13,5 @@ const menuSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 export const Menu = mongoose.model("Menu", menuSchema);
+
+//new
