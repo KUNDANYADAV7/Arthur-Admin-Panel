@@ -87,21 +87,19 @@ const MenuForm = ({ initialMenuItem, isEditing = false }) => {
   const handleSubmit = async e => {
     e.preventDefault();
 
-    const requiredFields = ['name', 'category', 'description', 'price'];
+    const requiredFields = ['name', 'category', 'price'];
     const isFieldMissing = requiredFields.some(field => !formData[field] || formData[field].toString().trim() === '');
     
     // Image should only be required when not editing or when no previous image exists and no new image is selected
     const isImageMissing = !isEditing && !formData.image;
     
     const isOriginalPriceMissing = formData.onSale && (!formData.originalPrice || formData.originalPrice.toString().trim() === '');
-    const isSaleDescMissing = formData.onSale && (!formData.saleDescription || formData.saleDescription.trim() === '');
+    // const isSaleDescMissing = formData.onSale && (!formData.saleDescription || formData.saleDescription.trim() === '');
     
-    if (isFieldMissing || isImageMissing || isOriginalPriceMissing || isSaleDescMissing) {
+    if (isFieldMissing || isImageMissing || isOriginalPriceMissing) {
       toast.error(
         isOriginalPriceMissing
           ? 'Please fill in the original price since the item is on sale.'
-          : isSaleDescMissing
-          ? 'Please add a sale description for the on-sale item.'
           : isImageMissing
           ? 'Please upload an image.'
           : 'Please fill in all required fields.'

@@ -16,11 +16,11 @@ export const addMenu = async (req, res) => {
     const {
       name,
       category,
-      description,
+      description = "",
       price,
       onSale,
       originalPrice,
-      saleDescription, // ✅ Accept saleDescription from req.body
+      saleDescription = "", // Optional
     } = req.body;
 
     let imagePath = req.file ? `menuImages/${req.file.filename}` : null;
@@ -32,7 +32,7 @@ export const addMenu = async (req, res) => {
       price,
       originalPrice: onSale === "true" ? originalPrice : null,
       onSale,
-      saleDescription: onSale === "true" ? saleDescription : null, // ✅ Conditional assignment
+      saleDescription: onSale === "true" ? saleDescription : "",
       image: imagePath,
     });
 
@@ -42,7 +42,6 @@ export const addMenu = async (req, res) => {
     res.status(500).json({ message: "Failed to add menu", error });
   }
 };
-
 
 export const updateMenu = async (req, res) => {
   try {
@@ -55,29 +54,25 @@ export const updateMenu = async (req, res) => {
     const {
       name,
       category,
-      description,
+      description = "",
       price,
       onSale,
       originalPrice,
-      saleDescription,
+      saleDescription = "",
     } = req.body;
 
-    // If a new image is uploaded
     if (req.file) {
       if (existingMenu.image) deleteOldImage(existingMenu.image);
       existingMenu.image = `menuImages/${req.file.filename}`;
     }
 
-    // Update fields
     existingMenu.name = name;
     existingMenu.category = category;
     existingMenu.description = description;
     existingMenu.price = price;
-
-    const isOnSale = onSale === "true";
-    existingMenu.onSale = isOnSale;
-    existingMenu.originalPrice = isOnSale ? originalPrice : null;
-    existingMenu.saleDescription = isOnSale ? saleDescription : null;
+    existingMenu.onSale = onSale === "true";
+    existingMenu.originalPrice = existingMenu.onSale ? originalPrice : null;
+    existingMenu.saleDescription = existingMenu.onSale ? saleDescription : "";
 
     await existingMenu.save();
     res.status(200).json(existingMenu);

@@ -101,10 +101,13 @@ useEffect(()=>{
           {/* Right Side: Details */}
           <div>
             <h2 className="text-2xl font-bold text-[#5a1c00] mb-2">{selectedItem.name}</h2>
-            {selectedItem.onSale && selectedItem.originalPrice && <p className="text-gray-700 mt-2 text-sm leading-relaxed mb-2">
-              <p className='text-[#f39c12] font-semibold'>Sale Description</p>
-              <p className='text-[#5a1c00] font-bold'>{selectedItem.saleDescription?.toUpperCase()}</p>
-            </p>}
+           {selectedItem.onSale && selectedItem.originalPrice && selectedItem.saleDescription && (
+  <p className="text-gray-700 mt-2 text-sm leading-relaxed mb-2">
+    <p className='text-[#f39c12] font-semibold'>Sale Description</p>
+    <p className='text-[#5a1c00] font-bold'>{selectedItem.saleDescription?.toUpperCase()}</p>
+  </p>
+)}
+
             <p className="text-sm text-gray-600 mb-1">
               <p className='text-[#f39c12] font-semibold'>Category:</p> {selectedItem.category}
             </p>
@@ -113,11 +116,13 @@ useEffect(()=>{
                 <strong>Sub-Category:</strong> {selectedItem.subCategory}
               </p>
             )}
+            
+            {selectedItem.description && (
             <p className="text-gray-700 mt-2 text-sm leading-relaxed mb-2">
               <p className='text-[#f39c12] font-semibold'>About This Dish</p>
               {selectedItem.description}
             </p>
-
+)}
             {/* Pricing */}
             <div className="mt-2">
   {selectedItem.onSale && selectedItem.originalPrice ? (
